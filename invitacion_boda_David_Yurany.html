@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>David & Yurany — Nuestra Boda</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tone.js for wedding melody -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <!-- Google Fonts: Great Vibes, Cormorant Garamond, Montserrat & Cinzel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              50: '#FCF9F2',
+              100: '#FAF3E3',
+              200: '#F3E5C3',
+              300: '#E7D199',
+              400: '#D8B868',
+              500: '#C5A046',
+              600: '#AA8434',
+              700: '#896425',
+              800: '#694B1E',
+            },
+            pearl: '#FDFCFA',
+            ivory: '#FAF7F0',
+            warmwhite: '#FFFFFF',
+            champagne: '#F8F3EA',
+            charcoal: '#262422'
+          },
+          fontFamily: {
+            script: ['"Great Vibes"', 'cursive'],
+            serif: ['"Cormorant Garamond"', 'serif'],
+            cinzel: ['"Cinzel"', 'serif'],
+            sans: ['"Montserrat"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Shimmer Gold Gradient Effect */
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #B88E3E 0%, #F5E5B8 35%, #D4AF37 55%, #9E742C 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gold-gradient-bg {
+      background: linear-gradient(135deg, #D4AF37 0%, #F6E2AB 50%, #B8860B 100%);
+    }
+
+    .gold-border-lux {
+      border: 1px solid rgba(212, 175, 55, 0.45);
+    }
+
+    .gold-card-shadow {
+      box-shadow: 0 15px 40px -10px rgba(184, 142, 62, 0.18), 0 0 25px rgba(212, 175, 55, 0.08);
+    }
+
+    /* Wax Seal Effect */
+    .wax-seal {
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: radial-gradient(circle at 35% 35%, #e2be6b, #b58934 60%, #87611e);
+      box-shadow: 0 10px 25px rgba(137, 100, 37, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.5);
+    }
+    .wax-seal:hover {
+      transform: scale(1.08) rotate(-2deg);
+      box-shadow: 0 15px 35px rgba(137, 100, 37, 0.55), inset 0 2px 5px rgba(255, 255, 255, 0.7);
+    }
+
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.1); opacity: 0.25; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .seal-pulse {
+      animation: pulseRing 2.6s infinite ease-in-out;
+    }
+
+    /* Floating Gold & White Dust Particles */
+    .sparkle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: floatSparkles 10s infinite linear;
+    }
+
+    @keyframes floatSparkles {
+      0% {
+        transform: translateY(-20px) rotate(0deg) scale(0.6);
+        opacity: 0;
+      }
+      20% { opacity: 0.8; }
+      80% { opacity: 0.6; }
+      100% {
+        transform: translateY(105vh) rotate(360deg) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+    /* Paper texture imitation */
+    .paper-card {
+      background-color: #FAF7F0;
+      background-image: radial-gradient(rgba(212, 175, 55, 0.15) 0.8px, transparent 0.8px);
+      background-size: 16px 16px;
+    }
+  </style>
+</head>
+
+<body class="bg-[#F6F4EE] text-gray-800 font-sans antialiased overflow-x-hidden relative selection:bg-gold-200">
+
+  <div id="sparkles-container" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+  <div id="envelope-overlay" class="fixed inset-0 z-50 bg-[#1F1B16]/85 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-700">
+    <div class="relative max-w-lg w-full text-center">
+      
+      <!-- Envelope Container in White & Gold Luxury theme -->
+      <div class="relative bg-gradient-to-b from-[#FCFBF8] to-[#F5EFE4] p-8 sm:p-12 rounded-2xl shadow-2xl border-2 border-gold-300/80 text-charcoal overflow-hidden">
+        
+        <!-- Subtle gold inner frame border -->
+        <div class="absolute inset-3 border border-gold-400/40 rounded-xl pointer-events-none"></div>
+        <div class="absolute inset-4 border border-gold-300/20 rounded-lg pointer-events-none"></div>
+
+        <!-- Envelope Content Preview -->
+        <div class="relative z-10 pt-4 pb-2">
+          <p class="font-cinzel text-gold-700 text-xs sm:text-sm tracking-[0.3em] uppercase">Nuestra Invitación de Boda</p>
+          
+          <h1 class="font-script text-5xl sm:text-7xl gold-gradient-text my-3 drop-shadow-sm">David & Yurany</h1>
+          
+          <div class="flex items-center justify-center gap-3 my-4">
+            <span class="w-12 h-[1px] bg-gold-400"></span>
+            <span class="text-gold-500 text-xs">✦</span>
+            <span class="w-12 h-[1px] bg-gold-400"></span>
+          </div>
+          
+          <p class="font-serif italic text-base sm:text-lg text-gray-700 max-w-xs mx-auto leading-relaxed">
+            "Algunos momentos están hechos para compartirlos con el corazón. Este es uno de ellos..."
+          </p>
+
+          <!-- Interactive Golden Wax Seal Button -->
+          <div class="mt-8 relative inline-block group cursor-pointer" onclick="openInvitation()">
+            <div class="absolute -inset-3 rounded-full bg-gold-400/30 seal-pulse"></div>
+            
+            <div class="wax-seal relative w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-white/60 flex flex-col items-center justify-center text-white shadow-2xl mx-auto">
+              <!-- Rings Monogram Icon -->
+              <svg class="w-7 h-7 text-white fill-current mb-0.5 drop-shadow" viewBox="0 0 24 24">
+                <path d="M12 2C9.24 2 7 4.24 7 7c0 .88.23 1.7.63 2.41L5.86 11.2a6.98 6.98 0 0 0-3.86-.2C.92 11.23-.08 12.24.01 13.33c.12 1.34 1.25 2.37 2.61 2.37.13 0 .26-.01.39-.03l1.19 1.98C3.44 18.3 3 19.1 3 20c0 2.21 1.79 4 4 4 1.66 0 3.09-1.01 3.69-2.45.67.29 1.43.45 2.22.45 2.76 0 5-2.24 5-5 0-.88-.23-1.7-.63-2.41l1.77-1.79c.75.46 1.63.75 2.58.75 2.76 0 5-2.24 5-5s-2.24-5-5-5c-2.76 0-5 2.24-5 5 0 .88.23 1.7.63 2.41L12.63 12.8a6.98 6.98 0 0 0-3.86-.2C8.5 12.6 8.24 12.6 8 12.6c-.79 0-1.55-.16-2.22-.45C6.39 10.71 7.82 9.7 9.48 9.7c.52 0 1.01.11 1.47.28.32-.42.7-.78 1.14-1.07C11.38 8.35 11 7.72 11 7c0-1.66 1.34-3 3-3s3 1.34 3 3c0 .72-.38 1.35-1.09 1.91.44.29.82.65 1.14 1.07.46-.17.95-.28 1.47-.28 2.76 0 5 2.24 5 5 0 2.76-2.24 5-5 5-.95 0-1.83-.29-2.58-.75l-1.77 1.79c.4.71.63 1.53.63 2.41 0 2.76-2.24 5-5 5-2.76 0-5-2.24-5-5 0-.9.44-1.7 1.19-2.35l-1.19-1.98c-.13.02-.26.03-.39.03-1.36 0-2.49-1.03-2.61-2.37-.09-1.09.91-2.1 1.99-2.33 1.25-.26 2.58.2 3.53 1.15l1.77-1.79C7.23 8.7 7 7.88 7 7c0-2.76 2.24-5 5-5z"/>
+              </svg>
+              <span class="text-[10px] uppercase font-cinzel font-bold tracking-widest text-white drop-shadow">Y & D</span>
+            </div>
+            
+            <p class="text-xs uppercase font-cinzel tracking-widest text-gold-700 mt-3 flex items-center justify-center gap-1">
+              <span>Toca el sello para abrir</span>
+              <svg class="w-3.5 h-3.5 animate-bounce text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+            </p>
+          </div>
+
+          <p class="text-xs text-gray-500 mt-6 font-medium">Esta invitación es válida para <strong class="text-gold-700">2 personas</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main id="invitation-main" class="min-h-screen relative z-10 opacity-0 transition-opacity duration-1000 max-w-xl mx-auto px-4 py-8 sm:py-12">
+    
+    <!-- Music Player Button (Tone.js Romantic Melody) -->
+    <div class="fixed bottom-4 right-4 z-40">
+      <button onclick="toggleMelody()" id="music-btn" class="bg-white/95 backdrop-blur-md shadow-xl border border-gold-300 rounded-full px-4 py-2.5 text-gold-700 hover:text-gold-800 hover:scale-105 transition duration-300 flex items-center gap-2 text-xs font-cinzel tracking-wider" title="Melodía nupcial">
+        <span id="music-icon" class="text-base">🎵</span>
+        <span id="music-text" class="hidden sm:inline">Melodía Romántica</span>
+      </button>
+    </div>
+
+    <!-- Paper Invitation Card: White, Gold, and Pearl -->
+    <div class="paper-card rounded-3xl overflow-hidden border-2 border-gold-300/70 gold-card-shadow relative">
+      
+      <!-- Top Decorative Watercolor Floral & Gold Arch -->
+      <div class="relative w-full overflow-hidden pt-10 pb-4 text-center bg-gradient-to-b from-white via-gold-50/50 to-transparent">
+        
+        <!-- Elegant Watercolor Style Floral Vector Header in White & Gold -->
+        <div class="w-full flex justify-center items-center px-4">
+          <svg class="w-full max-w-md h-auto" viewBox="0 0 500 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Left gold-tint foliage -->
+            <path d="M60 85 C 100 70, 140 85, 180 65 C 150 45, 110 55, 75 75 Z" fill="#D4AF37" opacity="0.35"/>
+            <path d="M40 95 C 75 90, 110 95, 140 85 C 115 75, 80 80, 50 92 Z" fill="#AA8434" opacity="0.25"/>
+            <!-- Right gold-tint foliage -->
+            <path d="M440 85 C 400 70, 360 85, 320 65 C 350 45, 390 55, 425 75 Z" fill="#D4AF37" opacity="0.35"/>
+            <path d="M460 95 C 425 90, 390 95, 360 85 C 385 75, 420 80, 450 92 Z" fill="#AA8434" opacity="0.25"/>
+            
+            <!-- Left Cream/White Rose Petals with Gold Core -->
+            <circle cx="130" cy="55" r="28" fill="#FFFFFF" stroke="#E2BE6B" stroke-width="0.8" opacity="0.95"/>
+            <circle cx="125" cy="50" r="22" fill="#FAF5E8" opacity="0.9"/>
+            <circle cx="132" cy="53" r="14" fill="#EEDAA2" opacity="0.75"/>
+            <circle cx="128" cy="52" r="7" fill="#B58934" opacity="0.85"/>
+
+            <!-- Right Cream/White Rose Petals with Gold Core -->
+            <circle cx="370" cy="55" r="28" fill="#FFFFFF" stroke="#E2BE6B" stroke-width="0.8" opacity="0.95"/>
+            <circle cx="375" cy="50" r="22" fill="#FAF5E8" opacity="0.9"/>
+            <circle cx="368" cy="53" r="14" fill="#EEDAA2" opacity="0.75"/>
+            <circle cx="372" cy="52" r="7" fill="#B58934" opacity="0.85"/>
+
+            <!-- Center Royal White Magnolia Flower -->
+            <circle cx="250" cy="45" r="22" fill="#FFFFFF" filter="drop-shadow(0px 3px 6px rgba(184,142,62,0.15))"/>
+            <path d="M250 12 C 242 28, 242 45, 250 50 C 258 45, 258 28, 250 12 Z" fill="#FFFFFF" stroke="#F1E2BF" stroke-width="0.7"/>
+            <path d="M250 78 C 242 62, 242 45, 250 40 C 258 45, 258 62, 250 78 Z" fill="#FFFFFF" stroke="#F1E2BF" stroke-width="0.7"/>
+            <path d="M217 45 C 233 37, 245 40, 250 45 C 245 50, 233 53, 217 45 Z" fill="#FFFFFF" stroke="#F1E2BF" stroke-width="0.7"/>
+            <path d="M283 45 C 267 37, 255 40, 250 45 C 255 50, 267 53, 283 45 Z" fill="#FFFFFF" stroke="#F1E2BF" stroke-width="0.7"/>
+            <circle cx="250" cy="45" r="6" fill="#D4AF37"/>
+
+            <!-- Interlocked Gold Wedding Rings -->
+            <circle cx="242" cy="98" r="12" stroke="url(#goldRingsGradWhite)" stroke-width="3.5" fill="none"/>
+            <circle cx="258" cy="98" r="12" stroke="url(#goldRingsGradWhite)" stroke-width="3.5" fill="none"/>
+            
+            <defs>
+              <linearGradient id="goldRingsGradWhite" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#AA8434"/>
+                <stop offset="40%" stop-color="#FFF3C4"/>
+                <stop offset="70%" stop-color="#D4AF37"/>
+                <stop offset="100%" stop-color="#896425"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+
+        <p class="font-cinzel uppercase tracking-[0.35em] text-xs font-semibold text-gold-700 mt-2">Nuestra Boda</p>
+        
+        <!-- Bride & Groom Names: Yura & David -->
+        <h2 class="font-script text-6xl sm:text-7xl gold-gradient-text my-2 drop-shadow-sm leading-tight">
+          David & Yurany
+        </h2>
+        
+        <!-- Elegant Gold Divider -->
+        <div class="flex items-center justify-center gap-3 my-3">
+          <span class="w-16 h-[1px] bg-gradient-to-r from-transparent to-gold-400"></span>
+          <span class="text-gold-500 text-sm">✦</span>
+          <span class="w-16 h-[1px] bg-gradient-to-l from-transparent to-gold-400"></span>
+        </div>
+      </div>
+
+      <div class="px-6 sm:px-10 text-center">
+        <blockquote class="font-serif italic text-lg sm:text-xl text-gray-700 leading-relaxed max-w-md mx-auto">
+          "Hay momentos inolvidables en la vida que cobran su verdadero valor cuando los compartimos con las personas que amamos. 
+          Hoy comenzamos el capítulo más hermoso de nuestra historia y nos alegra que tú seas parte de el, gracias por estar aquí."
+        </blockquote>
+        
+        <p class="font-cinzel text-[11px] uppercase tracking-[0.25em] text-gold-700 font-semibold mt-4">
+          ¡Gracias por ser parte de nuestras vidas!
+        </p>
+      </div>
+
+      <div class="px-6 sm:px-10 my-8">
+        <div class="relative group rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-white p-2.5">
+          
+          
+          <div class="relative overflow-hidden rounded-xl aspect-[3/4] sm:aspect-[4/5] bg-stone-100 flex items-center justify-center border border-gold-200">
+            <!-- Couple photo: set to user photo file image_c86348.jpg with automatic fallbacks -->
+            <img id="couple-photo-img" 
+                 src="image_c86348.jpg" 
+                 alt="David y Yurany" 
+                 class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                 onerror="handlePhotoFallback(this)" />
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+            
+            <div class="absolute bottom-4 left-4 right-4 text-center text-white">
+              <span class="font-script text-3xl sm:text-4xl drop-shadow-md text-amber-100 block">Por siempre juntos</span>
+              <span class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-white/90 drop-shadow">David & Yurany</span>
+            </div>
+          </div>
+
+          <div class="relative overflow-hidden rounded-xl aspect-[3/4] sm:aspect-[4/5] bg-stone-100 flex items-center justify-center border border-gold-200">
+            <!-- Couple photo: set to user photo file image_c86348.jpg with automatic fallbacks -->
+            <img id="couple-photo-img" 
+                 src="image_c86348.jpg" 
+                 alt="David y Yurany" 
+                 class="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                 onerror="handlePhotoFallback(this)" />
+            
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none"></div>
+            
+            <div class="absolute bottom-4 left-4 right-4 text-center text-white">
+              <span class="font-script text-3xl sm:text-4xl drop-shadow-md text-amber-100 block">Por siempre juntos</span>
+              <span class="font-cinzel text-[10px] tracking-[0.3em] uppercase text-white/90 drop-shadow">David & Yurany</span>
+            </div>
+          </div>
+
+          <!-- Photo customizer trigger & direct loader -->
+          <div class="mt-2.5 text-center">
+            <label for="custom-photo-input" class="cursor-pointer inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gold-50 border border-gold-300 text-[11px] text-gold-800 hover:bg-gold-100 transition shadow-sm font-cinzel">
+              <svg class="w-3.5 h-3.5 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+              <span>Toca aquí para seleccionar o cambiar la foto</span>
+            </label>
+            <input type="file" id="custom-photo-input" accept="image/*" class="hidden" onchange="previewUserPhoto(event)" />
+            <p class="text-[10px] text-gray-400 mt-1 italic font-serif">Foto configurada: image_c86348.jpg</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 sm:px-10 py-6 bg-gradient-to-r from-gold-50 via-white to-gold-50 border-y border-gold-300/40 text-center">
+        <p class="font-serif italic text-base text-gray-700 mb-4">Faltan solo para nuestro gran día:</p>
+        
+        <div class="grid grid-cols-4 gap-2 sm:gap-4 max-w-sm mx-auto">
+          <!-- Days -->
+          <div class="bg-white rounded-xl p-3 shadow-sm border border-gold-200">
+            <span id="days" class="font-serif font-bold text-2xl sm:text-3xl text-gold-700 block">00</span>
+            <span class="text-[10px] sm:text-xs tracking-wider text-gray-500 uppercase font-cinzel">Días</span>
+          </div>
+          <!-- Hours -->
+          <div class="bg-white rounded-xl p-3 shadow-sm border border-gold-200">
+            <span id="hours" class="font-serif font-bold text-2xl sm:text-3xl text-gold-700 block">00</span>
+            <span class="text-[10px] sm:text-xs tracking-wider text-gray-500 uppercase font-cinzel">Horas</span>
+          </div>
+          <!-- Minutes -->
+          <div class="bg-white rounded-xl p-3 shadow-sm border border-gold-200">
+            <span id="minutes" class="font-serif font-bold text-2xl sm:text-3xl text-gold-700 block">00</span>
+            <span class="text-[10px] sm:text-xs tracking-wider text-gray-500 uppercase font-cinzel">Min</span>
+          </div>
+          <!-- Seconds -->
+          <div class="bg-white rounded-xl p-3 shadow-sm border border-gold-200">
+            <span id="seconds" class="font-serif font-bold text-2xl sm:text-3xl text-gold-700 block">00</span>
+            <span class="text-[10px] sm:text-xs tracking-wider text-gray-500 uppercase font-cinzel">Seg</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 sm:px-10 py-10 space-y-8">
+        
+        <!-- When & Time -->
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-gold-100 border border-gold-300 flex items-center justify-center mx-auto text-gold-700 mb-3 shadow-sm">
+            <!-- Calendar Icon -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          
+          <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-gray-900">¿Cuándo?</h3>
+          <p class="font-serif italic text-2xl text-gold-700 mt-1 font-semibold">Domingo, 25 de Octubre</p>
+          <p class="font-sans text-sm font-semibold tracking-wider text-gray-600 mt-1">3:00 PM</p>
+          
+          <!-- Add to Calendar Button -->
+          <div class="mt-4">
+            <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+de+Yura+%26+David&dates=20261025T200000Z/20261026T030000Z&details=Celebraci%C3%B3n+del+matrimonio+de+Yura+y+David.+%C2%A1Te+esperamos!&location=Cra+81+%23+42-91,+Medellin,+Infiniti+Eventos" 
+               target="_blank" 
+               rel="noopener noreferrer"
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold-400 bg-white hover:bg-gold-50 text-gold-800 text-xs font-cinzel font-semibold tracking-wider transition shadow-sm hover:shadow">
+              <svg class="w-4 h-4 text-gold-600" fill="currentColor" viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg>
+              <span>Agendar en Google Calendar</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="w-20 h-px bg-gold-200 mx-auto"></div>
+
+        <!-- Where: Infiniti Eventos sede la 80 -->
+        <div class="text-center">
+          <div class="w-12 h-12 rounded-full bg-gold-100 border border-gold-300 flex items-center justify-center mx-auto text-gold-700 mb-3 shadow-sm">
+            <!-- Map Pin Icon -->
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </div>
+
+          <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-gray-900">¿Dónde?</h3>
+          <p class="font-serif text-2xl text-gold-700 mt-1 font-semibold">Infiniti Eventos</p>
+          <p class="text-sm font-medium text-gray-700">Sede La 80</p>
+          <p class="font-sans text-xs text-gray-500 mt-1">Cra 81 # 42-91, Medellín, Antioquia</p>
+          
+          <!-- Maps Buttons -->
+          <div class="mt-4 flex flex-wrap items-center justify-center gap-2.5">
+            <a href="https://www.google.com/maps/search/?api=1&query=Cra+81+%23+42-91+Medellin+Infiniti+eventos" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full gold-gradient-bg hover:brightness-105 text-gray-900 text-xs font-cinzel font-bold tracking-wider transition shadow-md hover:shadow-lg">
+              <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
+              <span>Cómo llegar (Google Maps)</span>
+            </a>
+            <a href="https://waze.com/ul?q=Cra+81+%23+42-91+Medellin" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gold-400 bg-white hover:bg-gold-50 text-gold-800 text-xs font-cinzel font-semibold tracking-wider transition shadow-sm">
+              <span>Abrir en Waze</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="w-20 h-px bg-gold-200 mx-auto"></div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          
+          <!-- Dress Code -->
+          <div class="bg-white p-5 rounded-2xl border border-gold-200 text-center shadow-sm">
+            <div class="text-2xl mb-2">👗🤵</div>
+            <h4 class="font-cinzel font-bold text-sm sm:text-base text-gray-800">Código de Vestimenta</h4>
+            <p class="text-gold-700 font-semibold text-xs uppercase tracking-wider mt-0.5">Formal / Elegante</p>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+              Nos reservamos el color blanco exclusivamente para la novia.
+            </p>
+          </div>
+
+          <!-- Gift / Lluvia de Sobres -->
+          <div class="bg-white p-5 rounded-2xl border border-gold-200 text-center shadow-sm">
+            <div class="text-2xl mb-2">✉️✨</div>
+            <h4 class="font-cinzel font-bold text-sm sm:text-base text-gray-800">Lluvia de Sobres</h4>
+            <p class="text-gold-700 font-semibold text-xs uppercase tracking-wider mt-0.5">Muestra de Cariño</p>
+            <p class="text-xs text-gray-500 mt-2 leading-relaxed">
+              Tu presencia es nuestro mejor regalo. Si deseas hacernos un detalle, contaremos con cofre de sobres.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-8 bg-gradient-to-b from-white via-gold-50 to-champagne p-6 sm:p-8 rounded-2xl border border-gold-300 text-center shadow-md">
+          <span class="inline-block px-3.5 py-1 bg-gold-200/80 text-gold-900 rounded-full text-[11px] font-cinzel font-bold uppercase tracking-widest mb-2 border border-gold-300">
+            Pase Válido para 2 Personas
+          </span>
+          <h3 class="font-cinzel text-xl sm:text-2xl font-bold text-gray-900 mb-2">Confirmación de Asistencia</h3>
+          <p class="text-xs sm:text-sm text-gray-600 max-w-sm mx-auto mb-6">
+            Por favor confírmanos antes del <span class="font-semibold text-gray-800">10 de Octubre</span> para organizar cada detalle con todo nuestro amor.
+          </p>
+
+          <!-- Interactive Confirmation Form -->
+          <div class="max-w-md mx-auto space-y-4 text-left">
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase font-cinzel tracking-wider mb-1" for="guest-name">
+                Nombre de los Invitados
+              </label>
+              <input type="text" id="guest-name" placeholder="Ej: Familia Gómez / Juan Pérez y Acompañante"
+                     class="w-full px-4 py-2.5 rounded-xl border border-gold-300 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white text-sm" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase font-cinzel tracking-wider mb-1">
+                ¿Nos acompañarás?
+              </label>
+              <div class="grid grid-cols-2 gap-3">
+                <button type="button" onclick="setAttendance(true)" id="btn-attending" 
+                        class="py-2.5 px-3 rounded-xl border-2 border-gold-500 bg-gold-500 text-white font-medium text-xs flex items-center justify-center gap-1.5 transition shadow-sm font-cinzel">
+                  <span>✓</span> Sí, ¡allí estaré!
+                </button>
+                <button type="button" onclick="setAttendance(false)" id="btn-declining" 
+                        class="py-2.5 px-3 rounded-xl border-2 border-gray-300 bg-white text-gray-600 font-medium text-xs flex items-center justify-center gap-1.5 transition hover:border-gray-400 font-cinzel">
+                  <span>✕</span> No podré asistir
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-gray-700 uppercase font-cinzel tracking-wider mb-1" for="guest-notes">
+                Mensaje o felicitación para David & Yurany (Opcional)
+              </label>
+              <textarea id="guest-notes" rows="2" placeholder="Escribe unas palabras de amor y bendición..."
+                        class="w-full px-4 py-2 rounded-xl border border-gold-300 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white text-sm"></textarea>
+            </div>
+
+            <button onclick="sendRSVPWhatsApp()" 
+                    class="w-full py-3.5 px-6 rounded-xl gold-gradient-bg text-gray-900 font-cinzel font-bold text-sm uppercase tracking-wider shadow-lg hover:shadow-xl hover:brightness-105 transition transform active:scale-95 flex items-center justify-center gap-2">
+              <!-- WhatsApp SVG -->
+              <svg class="w-5 h-5 fill-current text-green-900" viewBox="0 0 24 24">
+                <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.225 8.225 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.36c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.14.17-.25.25-.42.08-.17.04-.31-.02-.44s-.56-1.35-.77-1.85c-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.43.53.6.19 1.15.16 1.58.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.07-.12-.23-.19-.48-.32z"/>
+              </svg>
+              <span>Confirmar por WhatsApp</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="px-6 py-8 text-center bg-white border-t border-gold-200">
+        <p class="font-script text-4xl sm:text-5xl gold-gradient-text">David & Yurany</p>
+        <p class="font-serif italic text-sm text-gray-600 mt-2">"Dos almas, un corazón, una sola promesa eterna."</p>
+        <p class="font-cinzel text-[11px] text-gold-700 mt-4 tracking-[0.25em] uppercase">Medellín, Colombia • 2026</p>
+      </div>
+
+    </div>
+
+    <!-- Notification Toast Element -->
+    <div id="toast" class="fixed bottom-6 left-1/2 transform -translate-x-1/2 bg-gray-900/90 text-white text-xs sm:text-sm px-5 py-3 rounded-full shadow-2xl opacity-0 pointer-events-none transition-all duration-300 z-50 flex items-center gap-2">
+      <span id="toast-icon">✨</span>
+      <span id="toast-message">Mensaje</span>
+    </div>
+
+  </main>
+
+  <script>
+    // State Variables
+    let isAttending = true;
+    let isMusicPlaying = false;
+    let synth = null;
+    let melodyLoop = null;
+
+    // 1. Gold Sparkles Generator
+    function createSparkles() {
+      const container = document.getElementById('sparkles-container');
+      const sparkleCount = 24;
+      for (let i = 0; i < sparkleCount; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('sparkle');
+        const size = Math.random() * 8 + 4;
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+        dot.style.left = `${Math.random() * 100}vw`;
+        dot.style.backgroundColor = Math.random() > 0.4 ? '#D4AF37' : '#FFFFFF';
+        dot.style.boxShadow = '0 0 6px rgba(212, 175, 55, 0.6)';
+        dot.style.animationDuration = `${Math.random() * 6 + 7}s`;
+        dot.style.animationDelay = `${Math.random() * 5}s`;
+        container.appendChild(dot);
+      }
+    }
+    createSparkles();
+
+    // 2. Open Invitation Envelope Trigger
+    function openInvitation() {
+      const overlay = document.getElementById('envelope-overlay');
+      const main = document.getElementById('invitation-main');
+      
+      // Play celebratory sound chime using Tone.js
+      playChime();
+
+      // Animate out envelope
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        main.style.opacity = '1';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 700);
+    }
+
+    // 3. Audio Chime & Romantic Melody with Tone.js
+    function playChime() {
+      try {
+        if (window.Tone) {
+          Tone.start();
+          const chime = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: 'sine' },
+            envelope: { attack: 0.04, decay: 1.2, sustain: 0.1, release: 1.5 }
+          }).toDestination();
+          chime.volume.value = -8;
+          
+          // Ascending harp-like chord
+          const now = Tone.now();
+          chime.triggerAttackRelease('E5', '8n', now);
+          chime.triggerAttackRelease('G#5', '8n', now + 0.15);
+          chime.triggerAttackRelease('B5', '8n', now + 0.3);
+          chime.triggerAttackRelease('E6', '4n', now + 0.45);
+        }
+      } catch (e) {
+        console.log('Audio autoplay info:', e);
+      }
+    }
+
+    function toggleMelody() {
+      try {
+        Tone.start();
+        const icon = document.getElementById('music-icon');
+        const text = document.getElementById('music-text');
+
+        if (!isMusicPlaying) {
+          if (!synth) {
+            synth = new Tone.PolySynth(Tone.Synth, {
+              oscillator: { type: "triangle" },
+              envelope: { attack: 0.2, decay: 1, sustain: 0.2, release: 2 }
+            }).toDestination();
+            synth.volume.value = -12;
+          }
+
+          // Gentle romantic progression (Canon in D inspiration)
+          const notes = [
+            { note: ["D4", "F#4", "A4"], duration: "2n" },
+            { note: ["A3", "C#4", "E4"], duration: "2n" },
+            { note: ["B3", "D4", "F#4"], duration: "2n" },
+            { note: ["F#3", "A3", "C#4"], duration: "2n" },
+            { note: ["G3", "B3", "D4"], duration: "2n" },
+            { note: ["D3", "F#3", "A3"], duration: "2n" },
+            { note: ["G3", "B3", "D4"], duration: "2n" },
+            { note: ["A3", "C#4", "E4"], duration: "2n" }
+          ];
+
+          let step = 0;
+          melodyLoop = new Tone.Loop(time => {
+            const current = notes[step % notes.length];
+            synth.triggerAttackRelease(current.note, current.duration, time);
+            step++;
+          }, "2n").start(0);
+
+          Tone.Transport.bpm.value = 65;
+          Tone.Transport.start();
+
+          isMusicPlaying = true;
+          icon.textContent = '🔊';
+          text.textContent = 'Pausar Melodía';
+          showToast('🎵 Melodía romántica sonando');
+        } else {
+          Tone.Transport.stop();
+          if (melodyLoop) melodyLoop.stop();
+          isMusicPlaying = false;
+          icon.textContent = '🎵';
+          text.textContent = 'Melodía Romántica';
+          showToast('Melodía pausada');
+        }
+      } catch (err) {
+        console.error('Tone audio error:', err);
+      }
+    }
+
+    // 4. Live Countdown to October 25
+    function updateCountdown() {
+      const currentYear = new Date().getFullYear();
+      let targetDate = new Date(`October 25, ${currentYear} 15:00:00`).getTime();
+      
+      const now = new Date().getTime();
+      if (now > targetDate) {
+        targetDate = new Date(`October 25, ${currentYear + 1} 15:00:00`).getTime();
+      }
+
+      const diff = targetDate - now;
+
+      if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        document.getElementById('days').textContent = String(days).padStart(2, '0');
+        document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+        document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+        document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 5. Attendance Toggle State
+    function setAttendance(attending) {
+      isAttending = attending;
+      const btnYes = document.getElementById('btn-attending');
+      const btnNo = document.getElementById('btn-declining');
+
+      if (attending) {
+        btnYes.className = "py-2.5 px-3 rounded-xl border-2 border-gold-500 bg-gold-500 text-white font-medium text-xs flex items-center justify-center gap-1.5 transition shadow-sm font-cinzel";
+        btnNo.className = "py-2.5 px-3 rounded-xl border-2 border-gray-300 bg-white text-gray-600 font-medium text-xs flex items-center justify-center gap-1.5 transition hover:border-gray-400 font-cinzel";
+      } else {
+        btnNo.className = "py-2.5 px-3 rounded-xl border-2 border-stone-600 bg-stone-700 text-white font-medium text-xs flex items-center justify-center gap-1.5 transition shadow-sm font-cinzel";
+        btnYes.className = "py-2.5 px-3 rounded-xl border-2 border-gray-300 bg-white text-gray-600 font-medium text-xs flex items-center justify-center gap-1.5 transition hover:border-gray-400 font-cinzel";
+      }
+    }
+
+    // 6. WhatsApp RSVP Formatter for David & Yurany
+    function sendRSVPWhatsApp() {
+      const nameInput = document.getElementById('guest-name').value.trim();
+      const notesInput = document.getElementById('guest-notes').value.trim();
+
+      if (!nameInput) {
+        showToast('⚠️ Por favor escribe tu nombre antes de confirmar');
+        document.getElementById('guest-name').focus();
+        return;
+      }
+
+      const statusText = isAttending ? "¡SÍ ASISTIRÉ! 🎉🤍💍" : "Lamentablemente no podré asistir 🥺";
+      let message = `¡Hola David y Yurany! ✨\n\n`;
+      message += `Soy *${nameInput}*.\n`;
+      message += `Sobre su invitación a la boda (Domingo 25 de Octubre, 3:00 PM):\n`;
+      message += `👉 *Respuesta:* ${statusText}\n`;
+      message += `👉 *Pases:* Válido para 2 personas.\n`;
+      
+      if (notesInput) {
+        message += `\n💬 *Mensaje:* "${notesInput}"\n`;
+      }
+      
+      message += `\n¡Mil bendiciones en este gran paso y que el amor reine siempre en sus vidas! 🕊️🥂`;
+
+      const encodedMsg = encodeURIComponent(message);
+      window.open(`https://api.whatsapp.com/send?text=${encodedMsg}`, '_blank');
+      
+      showToast('💌 Abriendo WhatsApp para enviar confirmación...');
+    }
+
+    // 7. Preview User Custom Photo & Persist in LocalStorage
+    function initSavedPhoto() {
+      const savedPhoto = localStorage.getItem('wedding_couple_photo_yd');
+      if (savedPhoto) {
+        const photoEl = document.getElementById('couple-photo-img');
+        if (photoEl) photoEl.src = savedPhoto;
+      }
+    }
+
+    function handlePhotoFallback(img) {
+      // Fallback chain: image_c86348.jpg -> IMG-20260907-WA0144.jpg -> romantic wedding fallback
+      if (img.src.includes('image_c86348.jpg')) {
+        img.src = 'IMG-20260907-WA0144.jpg';
+        return;
+      }
+      if (!localStorage.getItem('wedding_couple_photo_yd')) {
+        img.src = 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=80';
+      }
+    }
+
+    function previewUserPhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const base64 = e.target.result;
+          document.getElementById('couple-photo-img').src = base64;
+          try {
+            localStorage.setItem('wedding_couple_photo_yd', base64);
+          } catch (err) {
+            console.warn('Storage unavailable:', err);
+          }
+          showToast('📸 ¡Foto de Yura y David cargada exitosamente!');
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Call on load
+    window.addEventListener('DOMContentLoaded', initSavedPhoto);
+    initSavedPhoto();
+
+    // 8. Custom Toast Notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const msgElem = document.getElementById('toast-message');
+      msgElem.textContent = message;
+      toast.style.opacity = '1';
+      toast.style.transform = 'translate(-50%, -10px)';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, 0)';
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
