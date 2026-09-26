@@ -8,8 +8,6 @@
 
   <!-- Tailwind CSS CDN -->
   <!-- Tailwind pre-compiled inline CSS (Zero external CSS/CDN dependency) -->
-  <!-- Tone.js for wedding melody -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
   <!-- Google Fonts: Great Vibes, Cormorant Garamond, Montserrat & Cinzel -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -239,16 +237,18 @@
     </div>
   </div>
 
+    <!-- Canción de Fondo: Carlos Rivera - Te Esperaba -->
+  <audio id="wedding-audio" src="cancion.mp3" preload="auto" loop></audio>
   <main id="invitation-main"
     class="min-h-screen relative z-10 opacity-0 transition-opacity duration-1000 max-w-xl mx-auto px-4 py-8 sm:py-12">
 
-    <!-- Music Player Button (Tone.js Romantic Melody) -->
+    <!-- Music Player Button -->
     <div class="fixed bottom-4 right-4 z-40">
-      <button onclick="toggleMelody()" id="music-btn"
+      <button onclick="toggleMusic()" id="music-btn"
         class="bg-white/95 backdrop-blur-md shadow-xl border border-gold-300 rounded-full px-4 py-2.5 text-gold-700 hover:text-gold-800 hover:scale-105 transition duration-300 flex items-center gap-2 text-xs font-cinzel tracking-wider"
-        title="Melodía nupcial">
+        title="Canción: Te Esperaba - Carlos Rivera">
         <span id="music-icon" class="text-base">🎵</span>
-        <span id="music-text" class="hidden sm:inline">Melodía Romántica</span>
+        <span id="music-text" class="hidden sm:inline">Carlos Rivera - Te Esperaba</span>
       </button>
     </div>
 
@@ -597,13 +597,21 @@
     }
     createSparkles();
 
-    // 2. Open Invitation Envelope Trigger
+    // 2. Open Invitation Envelope Trigger & Play Song
     function openInvitation() {
       const overlay = document.getElementById('envelope-overlay');
       const main = document.getElementById('invitation-main');
+      const audio = document.getElementById('wedding-audio');
 
-      // Play celebratory sound chime using Tone.js
-      playChime();
+      // Iniciar canción "Te Esperaba" de Carlos Rivera
+      if (audio) {
+        audio.play().then(() => {
+          isMusicPlaying = true;
+          updateMusicUI(true);
+        }).catch(err => {
+          console.log('Autoplay no permitido sin interacción:', err);
+        });
+      }
 
       // Animate out envelope
       overlay.style.opacity = '0';
@@ -614,85 +622,34 @@
       }, 700);
     }
 
-    // 3. Audio Chime & Romantic Melody with Tone.js
-    function playChime() {
-      try {
-        if (window.Tone) {
-          Tone.start();
-          const chime = new Tone.PolySynth(Tone.Synth, {
-            oscillator: { type: 'sine' },
-            envelope: { attack: 0.04, decay: 1.2, sustain: 0.1, release: 1.5 }
-          }).toDestination();
-          chime.volume.value = -8;
+    // 3. Audio Player Controls (Carlos Rivera - Te Esperaba)
+    function toggleMusic() {
+      const audio = document.getElementById('wedding-audio');
+      if (!audio) return;
 
-          // Ascending harp-like chord
-          const now = Tone.now();
-          chime.triggerAttackRelease('E5', '8n', now);
-          chime.triggerAttackRelease('G#5', '8n', now + 0.15);
-          chime.triggerAttackRelease('B5', '8n', now + 0.3);
-          chime.triggerAttackRelease('E6', '4n', now + 0.45);
-        }
-      } catch (e) {
-        console.log('Audio autoplay info:', e);
+      if (audio.paused) {
+        audio.play().then(() => {
+          isMusicPlaying = true;
+          updateMusicUI(true);
+          showToast('🎵 Reproduciendo: Te Esperaba');
+        }).catch(err => {
+          console.error('Audio play error:', err);
+        });
+      } else {
+        audio.pause();
+        isMusicPlaying = false;
+        updateMusicUI(false);
+        showToast('Música pausada');
       }
     }
 
-    function toggleMelody() {
-      try {
-        if (!window.Tone) {
-          showToast('Audio no disponible en este dispositivo');
-          return;
-        }
-        Tone.start();
-        const icon = document.getElementById('music-icon');
-        const text = document.getElementById('music-text');
+    window.toggleMelody = toggleMusic;
 
-        if (!isMusicPlaying) {
-          if (!synth) {
-            synth = new Tone.PolySynth(Tone.Synth, {
-              oscillator: { type: "triangle" },
-              envelope: { attack: 0.2, decay: 1, sustain: 0.2, release: 2 }
-            }).toDestination();
-            synth.volume.value = -12;
-          }
-
-          // Gentle romantic progression (Canon in D inspiration)
-          const notes = [
-            { note: ["D4", "F#4", "A4"], duration: "2n" },
-            { note: ["A3", "C#4", "E4"], duration: "2n" },
-            { note: ["B3", "D4", "F#4"], duration: "2n" },
-            { note: ["F#3", "A3", "C#4"], duration: "2n" },
-            { note: ["G3", "B3", "D4"], duration: "2n" },
-            { note: ["D3", "F#3", "A3"], duration: "2n" },
-            { note: ["G3", "B3", "D4"], duration: "2n" },
-            { note: ["A3", "C#4", "E4"], duration: "2n" }
-          ];
-
-          let step = 0;
-          melodyLoop = new Tone.Loop(time => {
-            const current = notes[step % notes.length];
-            synth.triggerAttackRelease(current.note, current.duration, time);
-            step++;
-          }, "2n").start(0);
-
-          Tone.Transport.bpm.value = 65;
-          Tone.Transport.start();
-
-          isMusicPlaying = true;
-          icon.textContent = '🔊';
-          text.textContent = 'Pausar Melodía';
-          showToast('🎵 Melodía romántica sonando');
-        } else {
-          Tone.Transport.stop();
-          if (melodyLoop) melodyLoop.stop();
-          isMusicPlaying = false;
-          icon.textContent = '🎵';
-          text.textContent = 'Melodía Romántica';
-          showToast('Melodía pausada');
-        }
-      } catch (err) {
-        console.error('Tone audio error:', err);
-      }
+    function updateMusicUI(playing) {
+      const icon = document.getElementById('music-icon');
+      const text = document.getElementById('music-text');
+      if (icon) icon.textContent = playing ? '🔊' : '🎵';
+      if (text) text.textContent = playing ? 'Pausar Canción' : 'Carlos Rivera';
     }
 
     // 4. Live Countdown to October 25
