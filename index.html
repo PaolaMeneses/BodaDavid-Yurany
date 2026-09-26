@@ -425,39 +425,10 @@
             Por favor confírmanos antes del <span class="font-semibold text-gray-800">10 de Octubre</span> para organizar cada detalle con todo nuestro amor.
           </p>
 
-          <!-- Interactive Confirmation Form -->
-          <div class="max-w-md mx-auto space-y-4 text-left">
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 uppercase font-cinzel tracking-wider mb-1" for="guest-name">
-                Nombre de los Invitados
-              </label>
-              <input type="text" id="guest-name" placeholder="Ej: Familia Gómez / Juan Pérez y Acompañante"
-                     class="w-full px-4 py-2.5 rounded-xl border border-gold-300 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white text-sm" />
+  
             </div>
 
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 uppercase font-cinzel tracking-wider mb-1">
-                ¿Nos acompañarás?
-              </label>
-              <div class="grid grid-cols-2 gap-3">
-                <button type="button" onclick="setAttendance(true)" id="btn-attending" 
-                        class="py-2.5 px-3 rounded-xl border-2 border-gold-500 bg-gold-500 text-white font-medium text-xs flex items-center justify-center gap-1.5 transition shadow-sm font-cinzel">
-                  <span>✓</span> Sí, ¡allí estaré!
-                </button>
-                <button type="button" onclick="setAttendance(false)" id="btn-declining" 
-                        class="py-2.5 px-3 rounded-xl border-2 border-gray-300 bg-white text-gray-600 font-medium text-xs flex items-center justify-center gap-1.5 transition hover:border-gray-400 font-cinzel">
-                  <span>✕</span> No podré asistir
-                </button>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-gray-700 uppercase font-cinzel tracking-wider mb-1" for="guest-notes">
-                Mensaje o felicitación para David & Yurany (Opcional)
-              </label>
-              <textarea id="guest-notes" rows="2" placeholder="Escribe unas palabras de amor y bendición..."
-                        class="w-full px-4 py-2 rounded-xl border border-gold-300 focus:outline-none focus:ring-2 focus:ring-gold-400 bg-white text-sm"></textarea>
-            </div>
+  
 
             <button onclick="sendRSVPWhatsApp()" 
                     class="w-full py-3.5 px-6 rounded-xl gold-gradient-bg text-gray-900 font-cinzel font-bold text-sm uppercase tracking-wider shadow-lg hover:shadow-xl hover:brightness-105 transition transform active:scale-95 flex items-center justify-center gap-2">
